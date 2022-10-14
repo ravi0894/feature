@@ -1,0 +1,280 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Feature</title>
+  <link href="Content/bootstrap.css" rel="stylesheet" />
+  
+  <script src="Scripts/jquery-1.11.0.min.js"></script>
+  <script src="Scripts/bootstrap.min.js"></script>
+</head>
+<body>
+
+
+<div class="container">
+  <!-- Trigger the modal with a button -->
+  <br/>
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Feature</button>
+  <button type="button" class="btn btn-primary">Download CSV</button>
+
+  <br/>
+  <br/>
+  <label for="selectyear">Year</label>
+  <select class="form-control" id="selectyear" >
+	<option value="2020">2020</option>
+	<option value="2021">2021</option>
+	<option value="2022">2022</option>
+  </select>
+  <br/>
+  <label for="selectrelease">Release</label>
+	<select class="form-control"id="selectrelease" >
+	   <option value="Jan">Jan</option>
+	   <option value="Feb">Feb</option>
+	   <option value="Mar">Mar</option>
+	   <option value="Apr">Apr</option>
+	   <option value="May">May</option>
+	   <option value="June">June</option>
+	   <option value="July">July</option>
+	   <option value="Aug">Aug</option>
+	   <option value="Sep">Sep</option>
+	   <option value="Oct">Oct</option>
+	   <option value="Nov">Nov</option>
+	   <option value="Dec">Dec</option>
+	</select>
+		<br/>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+			
+			
+			<div class="form-group">
+			  <label for="featureid">ID:</label>
+			  <input type="text" class="form-control" id="featureid" placeholder="Enter Id" name="featureid">
+			</div>
+	
+			<div class="form-group">
+			  <label for="featurename">Feature Name:</label>
+			  <input type="text" class="form-control" id="featurename" placeholder="Enter Feature Name" name="featurename">
+			</div>
+			
+			<div class="form-group">
+			  <label for="featuredescription">Feature Description:</label>
+			  <input type="text" class="form-control" id="featuredescription" placeholder="Enter Feature Description" name="featuredescription">
+			</div>
+			
+			<div class="form-group">
+			  <label for="featurereference">Feature Reference:</label>
+			  <input type="text" class="form-control" id="featurereference" placeholder="Enter Feature Reference" name="featurereference">
+			</div>
+			
+			<div class="form-group">
+			  <label for="wentlive">Went Live:</label>
+			  <select class="form-control"
+                     id="wentlive" >
+					<option value="Q1">Q1</option>
+					<option value="Q2">Q2</option>
+					<option value="Q3">Q3</option>
+					<option value="Q4">Q4</option>
+				  </select>
+			</div>
+			
+			<div class="form-group">
+			  <label for="release">Release:</label>
+			  <select class="form-control"
+                     id="release" >
+					<option value="Jan">Jan</option>
+					<option value="Feb">Feb</option>
+					<option value="Mar">Mar</option>
+					<option value="Apr">Apr</option>
+					<option value="May">May</option>
+					<option value="June">June</option>
+					<option value="July">July</option>
+					<option value="Aug">Aug</option>
+					<option value="Sep">Sep</option>
+					<option value="Oct">Oct</option>
+					<option value="Nov">Nov</option>
+					<option value="Dec">Dec</option>
+				  </select>
+			</div>
+			
+			<div class="form-group">
+			  <label for="datewentlive">Date Went Live:</label>
+			  <input type="date" class="form-control" id="datewentlive" placeholder="Enter Date Went Live" name="datewentlive">
+			</div>
+			
+			<div class="form-group">
+			  <label for="powerbireport">Power BI Report:</label>
+			  <input type="text" class="form-control" id="powerbireport" placeholder="Enter Power BI Report" name="powerbireport">
+			</div>
+			
+			<div class="form-group">
+			  <label for="sumologoreport">Sumo Logo Report:</label>
+			  <input type="text" class="form-control" id="sumologoreport" placeholder="Enter Sumo Logo Report" name="sumologoreport">
+			</div>
+			
+			<div class="form-group">
+			  <label for="comments">Comments:</label>
+			  <input type="text" class="form-control" id="comments" placeholder="Enter Comments" name="comments">
+			</div>
+			
+			<div class="form-group">
+				<button type="button" id="updateButton"
+                        class="btn btn-primary" data-dismiss="modal"
+                        onclick="productUpdate();">
+                  Add
+                </button>
+			</div>
+			
+			
+			
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
+
+
+  <div class="container">
+	<div class="row">
+        <table id="FeatureTable" class="table table-hover">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Short Feature Name</th>
+              <th>Description</th>
+              <th>Feature Reference</th>
+			  <th>Went Live</th>
+			  <th>Release</th>
+			  <th>Date Went Live</th>
+			  <th>Power BI Report</th>
+			  <th>Sumo Logs Report</th>
+			  <th>Comments</th>
+            </tr>
+          </thead>
+        </table>
+    </div>
+
+  
+  </div>
+  <script>
+    // Current product being edited
+    var editRow = null;
+
+    function productDisplay(ctl) {
+      editRow = $(ctl).parents("tr");
+      var cols = editRow.children("td");
+
+      $("#featureid").val($(cols[0]).text());
+      $("#featurename").val($(cols[1]).text());
+      $("#featuredescription").val($(cols[2]).text());
+	  $("#featurereference").val($(cols[3]).text());
+	  $("#wentlive").val($(cols[4]).text());
+	  $("#release").val($(cols[5]).text());
+	  $("#datewentlive").val($(cols[6]).text());
+	  $("#powerbireport").val($(cols[7]).text());
+	  $("#sumologoreport").val($(cols[8]).text());
+	  $("#comments").val($(cols[9]).text());
+	  
+      // Change Update Button Text
+      $("#updateButton").text("Update");
+    }
+
+    function productUpdate() {
+      if ($("#updateButton").text() == "Update") {
+        productUpdateInTable();
+      }
+      else {
+        productAddToTable();
+      }
+
+      // Clear form fields
+      formClear();
+
+      // Focus to product name field
+      $("#featureid").focus();
+    }
+
+    // Add product to <table>
+    function productAddToTable() {
+      // First check if a <tbody> tag exists, add one if not
+      if ($("#FeatureTable tbody").length == 0) {
+        $("#FeatureTable").append("<tbody></tbody>");
+      }
+
+      // Append product to table
+      $("#FeatureTable tbody").append(
+        productBuildTableRow());
+    }
+
+    // Update product in <table>
+    function productUpdateInTable() {
+      // Add changed product to table
+      $(editRow).after(productBuildTableRow());
+
+      // Remove original product
+      $(editRow).remove();
+
+      // Clear form fields
+      formClear();
+
+      // Change Update Button Text
+      $("#updateButton").text("Add");
+    }
+
+    // Build a <table> row of Product data
+    function productBuildTableRow() {
+      var ret =
+      "<tr>" +
+        "<td>" + $("#featureid").val() + "</td>" +
+        "<td>" + $("#featurename").val() + "</td>" +
+        "<td>" + $("#featuredescription").val() + "</td>" +
+		"<td>" + $("#featurereference").val() + "</td>" +
+		"<td>" + $("#wentlive").val() + "</td>" +
+		"<td>" + $("#release").val() + "</td>" +
+		"<td>" + $("#datewentlive").val() + "</td>" +
+		"<td>" + $("#powerbireport").val() + "</td>" +
+		"<td>" + $("#sumologoreport").val() + "</td>" +
+		"<td>" + $("#comments").val() + "</td>" +
+		"<td>" +
+		  "<button class='btn btn-primary' type='button' data-toggle='modal' data-target='#myModal' onclick='productDisplay(this)'>Edit</button>"+
+        "</td>" +
+        "<td>" +
+          "<button class='btn btn-primary' type='button' onclick='productDelete(this)'>Delete</button>"
+        "</td>" +
+      "</tr>"
+
+      return ret;
+    }
+
+    // Delete product from <table>
+    function productDelete(ctl) {
+      $(ctl).parents("tr").remove();
+    }
+
+    // Clear form fields
+    function formClear() {
+      $("#featureid").val("");
+      $("#featurename").val("");
+      $("#featuredescription").val("");
+	  $("#featurereference").val("");
+	  $("#wentlive").val("");
+	  $("#release").val("");
+	  $("#datewentlive").val("");
+	  $("#powerbireport").val("");
+	  $("#sumologoreport").val("");
+	  $("#comments").val("");
+    }
+  </script>
+</body>
+</html>
